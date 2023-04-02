@@ -25,7 +25,7 @@ describe("Liquidation", function () {
         params: [liquidator],
     }));
 
-    const LiquidationOperator = await ethers.getContractFactory("LiquidationOperator");
+    const LiquidationOperator = await ethers.getContractFactory("LiquidationOperator2");
     const liquidationOperator = await LiquidationOperator.deploy(overrides = {gasPrice: gasPrice});
     await liquidationOperator.deployed();
 
