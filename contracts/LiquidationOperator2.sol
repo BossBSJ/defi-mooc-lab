@@ -197,7 +197,7 @@ contract LiquidationOperator2 is IUniswapV2Callee {
         uniswapV2Pair_WETH_USDT = IUniswapV2Pair(uniswapV2Factory.getPair(address(WETH), address(USDT))); // Pool1
         uniswapV2Pair_WBTC_WETH = IUniswapV2Pair(uniswapV2Factory.getPair(address(WBTC), address(WETH))); // Pool2
         uniswapV2Pair_WBTC_USDT = IUniswapV2Pair(uniswapV2Factory.getPair(address(WBTC), address(USDT))); // Pool3
-        debt_USDT = 2000000000;
+        debt_USDT = 5000000000;
         
         // END TODO
     }
@@ -240,7 +240,7 @@ contract LiquidationOperator2 is IUniswapV2Callee {
         // we should borrow USDT, liquidate the target user and get the WBTC, then swap WBTC to repay uniswap
         // (please feel free to develop other workflows as long as they liquidate the target user successfully)
 
-        // uniswapV2Pair_WETH_USDT.swap(0, debt_USDT, address(this), "$");
+        console.log("debt_USDT", debt_USDT/1000000);
         uniswapV2Pair_WBTC_USDT.swap(0, debt_USDT, address(this), "$");
 
         // 3. Convert the profit into ETH and send back to sender
@@ -265,7 +265,7 @@ contract LiquidationOperator2 is IUniswapV2Callee {
         
         // assert(msg.sender == address(uniswapV2Pair_WETH_USDT));
         assert(msg.sender == address(uniswapV2Pair_WBTC_USDT));
-        (uint256 reserve_WETH_Pool1, uint256 reserve_USDT_Pool1, ) = uniswapV2Pair_WETH_USDT.getReserves(); // Pool1
+
         (uint256 reserve_WBTC_Pool2, uint256 reserve_WETH_Pool2, ) = uniswapV2Pair_WBTC_WETH.getReserves(); // Pool2
         (uint256 reserve_WBTC_Pool3, uint256 reserve_USDT_Pool3, ) = uniswapV2Pair_WBTC_USDT.getReserves(); // Pool3
 
@@ -274,7 +274,7 @@ contract LiquidationOperator2 is IUniswapV2Callee {
         uint debtToCover = amount1;
         USDT.approve(address(lendingPool), debtToCover);
         lendingPool.liquidationCall(address(WBTC), address(USDT), liquidationTarget, debtToCover, false);
-        uint collateral_WBTC = WBTC.balanceOf(address(this));
+
 
         // 2.2 swap WBTC for other things or repay directly
         
