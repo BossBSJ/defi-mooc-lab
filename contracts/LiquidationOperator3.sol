@@ -265,8 +265,6 @@ contract LiquidationOperator3 is IUniswapV2Callee {
         
         // assert(msg.sender == address(uniswapV2Pair_WETH_USDT));
         assert(msg.sender == address(uniswapV2Pair_WETH_USDC));
-        (uint256 reserve_WETH_Pool1, uint256 reserve_USDT_Pool1, ) = uniswapV2Pair_WETH_USDT.getReserves(); // Pool1
-        (uint256 reserve_WBTC_Pool2, uint256 reserve_WETH_Pool2, ) = uniswapV2Pair_WBTC_WETH.getReserves(); // Pool2
         (uint256 reserve_USDC_Pool3, uint256 reserve_WETH_Pool3, ) = uniswapV2Pair_WETH_USDC.getReserves(); // Pool3
 
         // 2.1 liquidate the target user
@@ -274,7 +272,6 @@ contract LiquidationOperator3 is IUniswapV2Callee {
         uint debtToCover = amount0;
         USDC.approve(address(lendingPool), debtToCover);
         lendingPool.liquidationCall(address(WETH), address(USDC), liquidationTarget, debtToCover, false);
-        uint collateral_WETH = WETH.balanceOf(address(this));
 
         // 2.2 swap WBTC for other things or repay directly
         
